@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class="admin-header">
+    <h1>Admin Dashboard</h1>
+    <a class="btn danger small" href="{{ url_for('admin_logout') }}">Logout</a>
+  </div>
+
+  {% if orders %}
+    <p>Total Orders: <strong>{{ orders|length }}</strong></p>
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer Name</th>
+          <th>Phone</th>
+          <th>Total Amount</th>
+          <th>Payment Screenshot</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.order_id }}</td>
+            <td>{{ order.name }}</td>
+            <td>{{ order.phone }}</td>
+            <td>${{ "%.2f"|format(order.total) }}</td>
+            <td>
+              {% if order.screenshot %}
+                <a class="btn small primary" href="{{ url_for('static', filename='uploads/' ~ order.screenshot) }}" target="_blank">View</a>
+              {% else %}
+                <em>No screenshot</em>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No orders yet.</p>
+  {% endif %}
+{% endblock %}

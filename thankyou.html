@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>Thank You!</h1>
+  <div class="order-summary">
+    <p>Your order <strong>#{{ order.order_id }}</strong> has been received.</p>
+    <p><strong>Name:</strong> {{ order.name }}</p>
+    <p><strong>Phone:</strong> {{ order.phone }}</p>
+    <p><strong>Address:</strong> {{ order.address }}</p>
+    <p><strong>Total:</strong> ${{ "%.2f"|format(order.total) }}</p>
+    {% if order.screenshot %}
+      <p>Payment screenshot: <a href="{{ url_for('static', filename='uploads/' ~ order.screenshot) }}" target="_blank">View</a></p>
+    {% endif %}
+  </div>
+  <a class="btn" href="{{ url_for('index') }}">Continue shopping</a>
+{% endblock %}

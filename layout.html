@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BlueShop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="{{ url_for('index') }}">BlueShop</a>
+        <nav>
+          <a class="nav-link" href="{{ url_for('cart') }}">Cart {% if session.get('cart') %}({{ session.get('cart')|length }}){% else %}(0){% endif %}</a>
+          {% if session.get('admin_logged_in') %}
+            <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin</a>
+          {% else %}
+            <a class="nav-link" href="{{ url_for('admin_login') }}">Admin</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">{% block content %}{% endblock %}</main>
+
+    <footer class="site-footer">
+      <div class="container">© BlueShop</div>
+    </footer>
+  </body>
+</html>

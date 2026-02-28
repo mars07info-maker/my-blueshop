@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>Your Cart</h1>
+  {% if items %}
+    <table class="cart-table">
+      <tr><th>Product</th><th>Qty</th><th>Price</th><th></th></tr>
+      {% for item in items %}
+        <tr>
+          <td>{{ item.product.name }}</td>
+          <td>
+            <form action="{{ url_for('update_cart') }}" method="post" class="inline">
+              <input type="hidden" name="product_id" value="{{ item.product.id }}">
+              <input class="qty" type="number" name="quantity" value="{{ item.qty }}" min="0">
+              <button class="btn small" type="submit">Update</button>
+            </form>
+          </td>
+          <td>${{ "%.2f"|format(item.subtotal) }}</td>
+          <td><a class="btn danger small" href="{{ url_for('remove_from_cart', product_id=item.product.id) }}">Remove</a></td>
+        </tr>
+      {% endfor %}
+    </table>
+    <div class="cart-summary">
+      <strong>Total: ${{ "%.2f"|format(total) }}</strong>
+      <a class="btn primary" href="{{ url_for('checkout') }}">Checkout</a>
+    </div>
+  {% else %}
+    <p>Your cart is empty. <a href="{{ url_for('index') }}">Continue shopping</a>.</p>
+  {% endif %}
+{% endblock %}

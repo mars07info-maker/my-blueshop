@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>Checkout</h1>
+  {% if order %}
+    <p>Thank you! Your order #{{ order.order_id }} has been placed.</p>
+    <div class="order-summary">
+      <h2>Order Summary</h2>
+      <p><strong>Name:</strong> {{ order.name }}</p>
+      <p><strong>Phone:</strong> {{ order.phone }}</p>
+      <p><strong>Address:</strong> {{ order.address }}</p>
+      <p><strong>Total:</strong> ${{ "%.2f"|format(order.total) }}</p>
+      {% if order.screenshot %}
+        <p>Screenshot uploaded: <a href="{{ url_for('static', filename='uploads/' ~ order.screenshot) }}" target="_blank">View</a></p>
+      {% endif %}
+    </div>
+    <a class="btn" href="{{ url_for('index') }}">Continue shopping</a>
+  {% else %}
+    <p>Please transfer payment via KBZPay: <strong>09751720838 (Kyaw Zayar Tun)</strong></p>
+    <form action="{{ url_for('checkout') }}" method="post" enctype="multipart/form-data" class="checkout-form">
+      <label>Name<input type="text" name="name" required></label>
+      <label>Phone<input type="text" name="phone" required></label>
+      <label>Address<textarea name="address" required></textarea></label>
+      <label>Payment Screenshot<input type="file" name="screenshot" accept="image/*" required></label>
+      <div class="cart-summary"><strong>Total: ${{ "%.2f"|format(total) }}</strong></div>
+      <button class="btn primary" type="submit">Confirm Order</button>
+    </form>
+  {% endif %}
+{% endblock %}

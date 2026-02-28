@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class="success-container">
+    <h1>✓ Order Successful!</h1>
+    <p class="success-message">We will contact you soon.</p>
+    
+    <div class="order-details">
+      <h2>Order Summary</h2>
+      <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+      <p><strong>Name:</strong> {{ order.name }}</p>
+      <p><strong>Phone:</strong> {{ order.phone }}</p>
+      <p><strong>Address:</strong> {{ order.address }}</p>
+      <p><strong>Total Amount:</strong> ${{ "%.2f"|format(order.total) }}</p>
+      
+      {% if order['order_items'] %}
+        <h3>Items:</h3>
+        <ul>
+          {% for item in order['order_items'] %}
+            <li>{{ item.name }} x{{ item.qty }} = ${{ "%.2f"|format(item.subtotal) }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      
+      {% if order.screenshot %}
+        <p><strong>Payment Screenshot:</strong> Uploaded successfully</p>
+      {% endif %}
+    </div>
+    
+    <a class="btn primary" href="{{ url_for('index') }}">Continue Shopping</a>
+  </div>
+{% endblock %}
